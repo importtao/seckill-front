@@ -1,11 +1,10 @@
 <template>
   <div class="footer">
     <div class="tag">
-      <a href="javascript:;">简体</a>
-      <a href="javascript:;">繁体</a>
-      <a href="javascript:;">English</a>
+      <a href="https://github.com/importtao">作者</a>
+      <a href="https://github.com/importtao/seckill-front">github</a>
       <a href="javascript:;">常见问题</a></div>
-    <div class="cop"><p>Copyright © 2004-2017  xx.com 版权所有</p></div>
+    <div class="cop"><p>滇ICP备17002680号|Copyright © 20017-2018  importtao 版权所有</p></div>
 
   </div>
 </template>
