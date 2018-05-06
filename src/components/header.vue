@@ -74,6 +74,8 @@
               </el-submenu>
               <el-menu-item index="3" disabled>消息中心</el-menu-item>
               <el-menu-item index="4"><router-link to="/wishList" title="愿望清单" style="text-decoration:none;">愿望清单</router-link></el-menu-item>
+              <el-menu-item index="5"><router-link to="/seller" title="商户端" style="text-decoration:none;">商户端</router-link></el-menu-item>
+
             </el-menu>
           </div>
         </el-col>

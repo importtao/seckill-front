@@ -155,7 +155,11 @@
     background: #f7f7f7;
   }
   .price{
-    color: red;
+    display: block;
+    color: #d44d44;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 20px;
   }
   .gi{
     text-align: center;

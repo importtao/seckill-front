@@ -11,7 +11,7 @@
             <el-row >
               <el-col :span="24" >
                 <el-card :body-style="{ padding: '0px'}" class="bc" shadow="hover">
-                  <img src="../assets/logo.png" class="image">
+                  <img src="../assets/t.jpg" class="image">
                   <div style="padding: 14px;">
                     <span>好吃的汉堡</span>
                     <div class="bottom clearfix">
@@ -37,7 +37,7 @@
             <el-row>
               <el-col :span="8" v-for="(o, index) in 6" :key="o" >
                 <el-card :body-style="{ padding: '0px'}" class="bc" shadow="hover">
-                  <img src="../assets/logo.png" class="image">
+                  <img src="../assets/t.jpg" class="image">
                   <div style="padding: 14px;">
                     <span>好吃的汉堡</span>
                     <div class="bottom clearfix">
@@ -63,7 +63,7 @@
             <el-row>
               <el-col :span="6" v-for="(o, index) in 36" :key="o" >
                 <el-card :body-style="{ padding: '0px'}" class="bc" shadow="hover">
-                  <img src="../assets/logo.png" class="image">
+                  <img src="../assets/t.jpg" class="image">
                   <div style="padding: 14px;">
                     <span>好吃的汉堡</span>
                     <div class="bottom clearfix">
