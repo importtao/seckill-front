@@ -5,19 +5,7 @@
       <v-s-header></v-s-header>
     </el-header>
     <el-main>
-      <div>
-        <el-upload
-          action="http://127.0.0.1/sbe/img"
-          list-type="picture-card"
-          :on-preview="handlePictureCardPreview"
-          :on-success="imgSuccess"
-          :on-remove="handleRemove">
-          <i class="el-icon-plus"></i>
-        </el-upload>
-        <el-dialog :visible.sync="dialogVisible">
-          <img width="100%" :src="dialogImageUrl" alt="">
-        </el-dialog>
-      </div>
+      <router-view/>
     </el-main>
     <el-footer>
       <v-footer></v-footer>
@@ -81,5 +69,9 @@
     width: 178px;
     height: 178px;
     display: block;
+  }
+  .el-footer,.el-header{
+    width: 100%;
+    padding: 0px;
   }
 </style>

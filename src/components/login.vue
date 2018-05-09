@@ -20,7 +20,7 @@
 
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" class="lbtn" @click="submitForm('loginForm')">登录</el-button>
+            <button  class="lbtn" type="button" @click="submitForm('loginForm')">登录</button>
           </el-form-item>
         </el-form>
         <div class="border"></div>
@@ -35,6 +35,7 @@
 <script>
 
   import ElFormItem from "../../node_modules/element-ui/packages/form/src/form-item.vue";
+  import {setStore,getStore,setSession,getSession} from '../utils/storage'
 
   export default {
     components: {ElFormItem},
@@ -63,7 +64,7 @@
         }
       };
       return {
-        rp: '',
+        rp: false,
         loginResponse:{},
         loginForm: {
           pass: '',
@@ -83,7 +84,19 @@
         }
       };
     },
+    mounted:function () {
+      this.init()
+    },
     methods: {
+      init(){
+        let userPass = JSON.parse(getStore('userPass'))
+        if(userPass != null){
+          this.loginForm.parameter = userPass.parameter
+          this.loginForm.pass = userPass.password
+          console.log(userPass)
+          console.log(userPass.parameter)
+        }
+      },
       open (t, m) {
         this.$notify.info({
           title: t,
@@ -96,10 +109,14 @@
           let arg = {'parameter':this.loginForm.parameter,'password':this.loginForm.pass}
           this.$http.get('http://127.0.0.1/sbe/user',{params:arg}).then(function(response){
             // 响应成功回调
+            if(this.rp){
+              setStore('userPass', arg)
+            }
             this.loginResponse=response.data
             if(this.loginResponse.status == 0){
+              setStore('token',this.loginResponse.token)
               this.$message.close()
-              this.$router.push('/home')
+              this.$router.push('/')
             }else{
               this.$message({
                 message: this.loginResponse.msg,

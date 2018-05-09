@@ -4,7 +4,7 @@
       <el-row>
         <el-col :span="4">
           <div class="grid-content bg-purple-dark">
-            <div class="logo">
+            <div class="logo" @click="goHome">
               <router-link to="/" title="商城首页"> </router-link>
             </div>
           </div>
@@ -145,6 +145,9 @@
       handleSelect(key, keyPath) {
         console.log(key, keyPath);
       },
+      goHome(){
+        this.$router.push("/")
+      },
       onScroll(){
         // 计算滚动的距离
         let scrolled = document.documentElement.scrollTop || document.body.scrollTop
@@ -215,7 +218,7 @@
     text-align: center;
     width: 50px;
     height: 50px;
-    border-radius: 10px;
+    border-radius: 25px;
     background: url("../assets/logo.png")no-repeat 50%;
     background-size: cover;
     display: block;

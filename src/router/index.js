@@ -8,10 +8,10 @@ import login from '@/components/login'
 import register from '@/components/register'
 import notfound from '@/components/404'
 import sellerHome from '@/components/seller/home'
-import sellerHeader from '@/components/seller/header'
-import sellerFooter from '@/components/seller/footer'
 import sellerLogin from '@/components/seller/login'
 import sellerRegister from '@/components/seller/register'
+import addGoods from '@/components/seller/addGoods'
+import goodsList from '@/components/seller/goodsList'
 
 Vue.use(Router)
 
@@ -61,6 +61,15 @@ export default new Router({
       path: '/seller/register',
       name: 'sellerRegister',
       component: sellerRegister
+    },{
+      path: '/seller/addGoods',
+      name: 'addGoods',
+      component: addGoods
+    },
+    {
+      path: '/seller/goodsList',
+      name: 'goodsList',
+      component: goodsList
     },
     { path: '*', component: notfound }
   ]

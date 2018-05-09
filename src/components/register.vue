@@ -19,7 +19,7 @@
             <el-input type="password" v-model="registerForm.checkPass" auto-complete="off" placeholder="确认密码"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" class="lbtn" @click="submitForm('registerForm')">注册</el-button>
+            <button type="button" class="lbtn" @click="submitForm('registerForm')">注册</button>
           </el-form-item>
         </el-form>
         <div class="border"></div>
@@ -34,6 +34,7 @@
 <script>
 
   import ElFormItem from "../../node_modules/element-ui/packages/form/src/form-item.vue";
+  import {setStore,getStore,setSession,getSession} from '../utils/storage'
 
   export default {
     components: {ElFormItem},
@@ -98,17 +99,18 @@
           if (valid) {
             let args = {'phone':this.registerForm.phone,'password':this.registerForm.pass}
             console.log(args)
-            this.$http.post('http://127.0.0.1/sbe/user',{args},{emulateJSON: true}).then(function(response){
+            this.$http.post('http://127.0.0.1/sbe/user',args,{emulateJSON: true}).then(function(response){
               // 响应成功回调
               this.registerResponse=response.data
               if(this.registerResponse.status == 0){
+                setStore('token',this.loginResponse.token)
                 this.$message.close()
-                this.$router.push('/home')
+                this.$router.push('/')
               }else{
                 this.$message({
                   message: this.registerResponse.msg,
                   type: 'error',
-                  duration: 6000
+                  duration: 10000
                 });
               }
             }, function(response){

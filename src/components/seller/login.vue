@@ -7,19 +7,19 @@
         <div style="text-align: center;color: #666;font-size: 25px;margin-bottom: 20px">
          秒杀商城-商户登录
         </div>
-        <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" label-width="100px"  labelPosition="top" class="demo-ruleForm">
-          <el-form-item prop="username">
-            <el-input type="text" v-model="ruleForm2.pass" auto-complete="off" placeholder="用户名"></el-input>
+        <el-form :model="loginForm" status-icon :rules="login" ref="loginForm" label-width="100px"  labelPosition="top" class="demo-ruleForm">
+          <el-form-item prop="parameter">
+            <el-input type="text" v-model="loginForm.parameter" auto-complete="off" placeholder="用户名"></el-input>
           </el-form-item>
           <el-form-item prop="pass">
-            <el-input type="password" v-model="ruleForm2.pass" auto-complete="off" placeholder="密码"></el-input>
+            <el-input type="password" v-model="loginForm.pass" auto-complete="off" placeholder="密码"></el-input>
           </el-form-item>
           <el-form-item>
             <el-checkbox v-model="rp">记住密码</el-checkbox>
             <router-link to="/seller/register" style="padding: 0 5px;margin-left: 50%" >申请成为商户</router-link>
           </el-form-item>
           <el-form-item>
-            <button class="lbtn" @click="submitForm('ruleForm2')">登录</button>
+            <button class="lbtn" type="button" @click="submitForm('loginForm')">登录</button>
           </el-form-item>
         </el-form>
         <div class="border"></div>
@@ -34,66 +34,68 @@
 <script>
 
   import ElFormItem from "../../../node_modules/element-ui/packages/form/src/form-item.vue";
+  import {setStore,getStore,setSession,getSession} from '../../utils/storage'
 
   export default {
     components: {ElFormItem},
     data() {
-      var checkAge = (rule, value, callback) => {
-        if (!value) {
-          return callback(new Error('年龄不能为空'));
+      var validateparameter = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请输入昵称/电话/商户ID'));
+        } else {
+          callback();
         }
-        setTimeout(() => {
-          if (!Number.isInteger(value)) {
-            callback(new Error('请输入数字值'));
-          } else {
-            if (value < 18) {
-              callback(new Error('必须年满18岁'));
-            } else {
-              callback();
-            }
-          }
-        }, 1000);
       };
       var validatePass = (rule, value, callback) => {
         if (value === '') {
           callback(new Error('请输入密码'));
         } else {
-          if (this.ruleForm2.checkPass !== '') {
-            this.$refs.ruleForm2.validateField('checkPass');
-          }
           callback();
         }
       };
       var validatePass2 = (rule, value, callback) => {
         if (value === '') {
           callback(new Error('请再次输入密码'));
-        } else if (value !== this.ruleForm2.pass) {
+        } else if (value !== this.loginForm.pass) {
           callback(new Error('两次输入密码不一致!'));
         } else {
           callback();
         }
       };
       return {
-        rp: '',
-        ruleForm2: {
+        rp: false,
+        loginResponse:{},
+        loginForm: {
           pass: '',
           checkPass: '',
-          age: ''
+          parameter: ''
         },
-        rules2: {
+        login: {
           pass: [
             { validator: validatePass, trigger: 'blur' }
           ],
           checkPass: [
             { validator: validatePass2, trigger: 'blur' }
           ],
-          age: [
-            { validator: checkAge, trigger: 'blur' }
+          parameter: [
+            { validator: validateparameter, trigger: 'blur' }
           ]
         }
       };
     },
+    mounted:function () {
+      this.init()
+    },
     methods: {
+      init(){
+        let sellerPass = JSON.parse(getStore('sellerPass'))
+        if(sellerPass != null){
+          this.loginForm.parameter = sellerPass.parameter
+          this.loginForm.pass = sellerPass.password
+          console.log(sellerPass)
+          console.log(sellerPass.parameter)
+        }
+      },
       open (t, m) {
         this.$notify.info({
           title: t,
@@ -103,7 +105,33 @@
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            alert('submit!');
+            let arg = {'parameter':this.loginForm.parameter,'password':this.loginForm.pass}
+            this.$http.get('http://127.0.0.1/sbe/seller',{params:arg}).then(function(response){
+              // 响应成功回调
+              if(this.rp){
+                setStore('sellerPass', arg)
+              }
+              this.loginResponse=response.data
+              if(this.loginResponse.status == 0){
+                setStore('sellerToken',this.loginResponse.sellerToken)
+                this.$message.close()
+                this.$router.push('/seller')
+              }else{
+                this.$message({
+                  message: this.loginResponse.msg,
+                  type: 'error',
+                  duration: 6000
+                });
+              }
+            }, function(response){
+              // 响应错误回调
+              console.log('data:'+response)
+              this.$message({
+                message: '后台错误，请联系管理员处理！',
+                type: 'error',
+                duration: 6000
+              });
+            });
           } else {
             console.log('error submit!!');
             return false;
