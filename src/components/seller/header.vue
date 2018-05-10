@@ -7,7 +7,7 @@
           <div class="grid-content bg-purple-dark">
             <el-menu :default-active="activeIndex" class="el-menu-demo hr" mode="horizontal" @select="handleSelect">
               <el-menu-item index="1">
-                <router-link to="/" title="商城首页" style="text-decoration:none;">首页</router-link>
+                <router-link to="/seller" title="商城首页" style="text-decoration:none;">首页</router-link>
               </el-menu-item>
               <el-submenu index="2">
                 <template slot="title">我的工作台</template>
@@ -21,9 +21,9 @@
                   <el-menu-item index="2-4-3">选项3</el-menu-item>
                 </el-submenu>
               </el-submenu>
-              <el-menu-item index="3" disabled>消息中心</el-menu-item>
-              <el-menu-item index="4"><router-link to="/seller/addGoods" title="添加商品" style="text-decoration:none;">添加商品</router-link></el-menu-item>
-              <el-menu-item index="5"><router-link to="/seller" title="商户端" style="text-decoration:none;">商户端</router-link></el-menu-item>
+              <el-menu-item index="4"><router-link to="/seller/goodsList" title="商品列表" style="text-decoration:none;">商品列表</router-link></el-menu-item>
+              <el-menu-item index="5"><router-link to="/seller/addGoods" title="添加商品" style="text-decoration:none;">添加商品</router-link></el-menu-item>
+              <el-menu-item index="6"><router-link to="/seller" title="商户端" style="text-decoration:none;">商户端</router-link></el-menu-item>
 
             </el-menu>
           </div>
@@ -35,14 +35,14 @@
           <div v-if="!logined && dtop" class="r r2">
             <el-dropdown placement="bottom">
               <span class="el-dropdown-link">
-                <el-button   circle size="mini"><i class="sk">&#xe62f;</i></el-button>
+                <el-button   circle size="mini" class="tx"><i class="sk">&#xe62f;</i></el-button>
               </span>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item>黄金糕</el-dropdown-item>
+                <el-dropdown-item>个人主页</el-dropdown-item>
                 <el-dropdown-item>狮子头</el-dropdown-item>
                 <el-dropdown-item>螺蛳粉</el-dropdown-item>
                 <el-dropdown-item disabled>双皮奶</el-dropdown-item>
-                <el-dropdown-item divided>蚵仔煎</el-dropdown-item>
+                <el-dropdown-item divided>注销登录</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
             <el-button   circle size="mini" style="margin-left: 30px"><i class="sk">&#xe887;</i></el-button>
@@ -178,5 +178,9 @@
   }
   .link{
     color: white;
+  }
+  .tx{
+    background: url("../../assets/logo.png")no-repeat 50%;
+    background-size: cover;
   }
 </style>

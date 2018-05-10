@@ -125,6 +125,7 @@
         idImg: [],
         license:[],
         logoImg: [],
+        registerResponse:{},
         registerForm: {
           pass: '',
           checkPass: '',
@@ -199,7 +200,7 @@
               this.registerResponse=response.data
               if(this.registerResponse.status == 0){
                 this.$message.close()
-                setStore('sellerToken',this.loginResponse.sellerToken)
+                setStore('sellerToken',this.registerResponse.sellerToken)
                 this.$router.push('/seller')
               }else{
                 this.$message({

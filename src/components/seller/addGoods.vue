@@ -95,6 +95,8 @@
   import ElRow from "element-ui/packages/row/src/row";
   import ElCol from "element-ui/packages/col/src/col";
   import ElButton from "../../../node_modules/element-ui/packages/button/src/button.vue";
+  import {setStore,getStore,setSession,getSession} from '../../utils/storage'
+
 
   export default {
     components: {
@@ -125,10 +127,12 @@
       };
       return {
         rp: '',
+        sellerToken:'',
         detailImg:[],
         dialogImageUrl: '',
         dialogVisible: false,
         logoImg: [],
+        addResponse:{},
         models:[{inventry:0,description:'1'}],
         goodsForm: {
           name: '',
@@ -158,7 +162,17 @@
         }
       };
     },
+    mounted:function () {
+      this.init()
+    },
     methods: {
+      init(){
+        let sellerToken =getStore('sellerToken')
+        if(sellerToken != null){
+          this.sellerToken = sellerToken
+          console.log(this.sellerToken)
+        }
+      },
       imgSuccess(response, file, fileList){
         if(response.status == 0){
           console.log(response.file)
@@ -186,17 +200,28 @@
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            let args = {'name':this.goodsForm.name, 'detail':this.goodsForm.detail, 'image':this.goodsForm.image, 'detailImg':this.goodsForm.detailImg, 'price': this.goodsForm.price}
+            let args = {'name':this.goodsForm.name, 'detail':this.goodsForm.detail, 'image':this.goodsForm.image, 'detailImg':this.goodsForm.detailImg, 'price': this.goodsForm.price,'sellerToken':this.sellerToken}
             console.log(args)
-            /*this.$http.post('http://127.0.0.1/sbe/goods',args,{emulateJSON: true}).then(function(response){
+            this.$http.post('http://127.0.0.1/sbe/goods',args,{emulateJSON: true}).then(function(response){
               // 响应成功回调
-              this.registerResponse=response.data
-              if(this.registerResponse.status == 0){
-                this.$message.close()
-                this.$router.push('/')
-              }else{
+              this.addResponse=response.data
+              if(this.addResponse.status == 0){
                 this.$message({
-                  message: this.registerResponse.msg,
+                  message: this.addResponse.msg,
+                  type: 'success',
+                  duration: 10000
+                });
+                this.$router.push('/seller/goodsList')
+              }else if(this.addResponse.status == 2){
+                this.$message({
+                  message: this.addResponse.msg,
+                  type: 'error',
+                  duration: 10000
+                });
+                this.$router.push('/seller/login')
+              } else{
+                this.$message({
+                  message: this.addResponse.msg,
                   type: 'error',
                   duration: 10000
                 });
@@ -204,7 +229,7 @@
             }, function(response){
               // 响应错误回调
               console.log('data:'+response)
-            });*/
+            });
           } else {
             console.log('error submit!!');
             return false;
