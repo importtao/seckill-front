@@ -212,9 +212,19 @@
             }, function(response){
               // 响应错误回调
               console.log('data:'+response)
+              this.$message({
+                message: '后台错误，请联系管理员处理！',
+                type: 'error',
+                duration: 6000
+              });
             });
           } else {
-            console.log('error submit!!');
+            console.log('请正确填写表单');
+            this.$message({
+              message: '请正确填写表单！',
+              type: 'error',
+              duration: 6000
+            });
             return false;
           }
         });

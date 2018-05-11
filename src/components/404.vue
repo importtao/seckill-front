@@ -1,10 +1,5 @@
 
 <template>
-  <el-container>
-    <el-header>
-      <v-header></v-header>
-    </el-header>
-    <el-main>
       <div class="m">
         <div id="error-container">
           <div id="error">
@@ -17,11 +12,6 @@
           </div>
         </div>
       </div>
-    </el-main>
-    <el-footer>
-      <v-footer></v-footer>
-    </el-footer>
-  </el-container>
 </template>
 
 <script>
@@ -317,5 +307,8 @@
   /* ==|== non-semantic helper classes ======================================== */
   .ir { display: block; border: 0; text-indent: -999em; overflow: hidden; background-color: transparent; background-repeat: no-repeat; text-align: left; direction: ltr; }
   .ir br { display: none; }
-
+  .el-footer,.el-header{
+    width: 100%;
+    padding: 0px;
+  }
 </style>

@@ -1,21 +1,9 @@
 <template>
-  <el-container>
-    <el-header>
-      <v-header></v-header>
-    </el-header>
-    <el-main>
-      <router-view></router-view>
-    </el-main>
-    <el-footer>
-      <v-footer></v-footer>
-    </el-footer>
-  </el-container>
 </template>
 
 <script>
   import header from '@/components/header'
   import footer from '@/components/footer'
-  import homeMain from '@/components/homeMain'
   export default {
     name: 'home',
     data () {
@@ -26,7 +14,6 @@
     components: {
       'v-header': header,
       'v-footer': footer,
-      'v-homeMain': homeMain
     }
   }
 </script>

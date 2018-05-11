@@ -1,91 +1,81 @@
 
 <template>
-  <el-container>
-    <el-header>
-      <v-s-header></v-s-header>
-    </el-header>
-    <el-main>
-      <div class="bd">
-        <div class="lb">
-          <div style="text-align: center;color: #666;font-size: 25px;margin-bottom: 10px;padding-top: 10px">
-            秒杀商城-商户-添加商品
-          </div>
-          <div class="border"></div>
-          <div class="lbf">
-            <el-form :model="goodsForm" status-icon :rules="rules2" ref="goodsForm" label-width="100px"  labelPosition="right" class="demo-ruleForm">
-              <el-form-item prop="name" label="商品名" :required="true">
-                <el-input type="text" v-model="goodsForm.name" auto-complete="off" placeholder="商品名"></el-input>
-              </el-form-item>
-              <el-form-item prop="detail" label="简介" >
-                <el-input
-                  type="textarea"
-                  :rows="4"
-                  placeholder="简介"
-                  v-model="goodsForm.detail">
-                </el-input>
-              </el-form-item>
-              <el-form-item label="缩略图" prop="image">
-                <el-upload
-                  class="upload-demo"
-                  action="http://127.0.0.1/sbe/img"
-                  :on-preview="handlePreview"
-                  :on-remove="handleRemove"
-                  :file-list="logoImg"
-                  :limit="6"
-                  :on-success="logoImgSuccess"
-                  list-type="picture">
-                  <el-button size="small" type="primary">点击上传logo</el-button>
-                  <span slot="tip" class="el-upload__tip">只能上传小于500kb的jpg/png文件</span>
-                </el-upload>
-              </el-form-item>
-              <el-form-item prop="detailImg" label="详细图片：">
-                <el-upload
-                  action="http://127.0.0.1/sbe/img"
-                  list-type="picture-card"
-                  :on-preview="handlePreview"
-                  :on-success="imgSuccess"
-                  :on-remove="handleRemove">
-                  <i class="el-icon-plus"></i>
-                </el-upload>
-                <el-dialog :visible.sync="dialogVisible">
-                  <img width="100%" :src="dialogImageUrl" alt="">
-                </el-dialog>
-              </el-form-item>
-              <el-form-item prop="price" label="商品单价" :required="true">
-                <el-input type="number" v-model="goodsForm.price" auto-complete="off" placeholder="商品单价" ></el-input>
-              </el-form-item>
-              <!--<el-form-item  label="商品型号">
-                <el-row>
-                  <el-col :span="5" v-for="model in models" style="margin-left: 10px">
-                    <el-form-item  prop="description" >
-                      <el-input type="text" v-model="model.description" auto-complete="off" placeholder="型号"></el-input>
-                    </el-form-item>
-                    <el-form-item  prop="inventry" style="margin-top: 20px">
-                      <el-input type="number" v-model="model.inventry" auto-complete="off" placeholder="库存"></el-input>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :span="3">
-                    <div>
-                      <button type="button" class="abtn" @click="addModel" style="margin-top: 15px;margin-left: 10px;">添加型号</button>
-                    </div>
-                  </el-col>
-                </el-row>
-              </el-form-item>-->
-              <el-form-item>
-                <button class="lbtn" @click="submitForm('goodsForm')" type="button">确认添加</button>
-              </el-form-item>
-            </el-form>
-            <div class="border"></div>
-            <div class="ffooter">
-            </div>
-          </div>
+  <div class="bd">
+    <div class="lb">
+      <div style="text-align: center;color: #666;font-size: 25px;margin-bottom: 10px;padding-top: 10px">
+        秒杀商城-商户-添加商品
+      </div>
+      <div class="border"></div>
+      <div class="lbf">
+        <el-form :model="goodsForm" status-icon :rules="rules2" ref="goodsForm" label-width="100px"  labelPosition="right" class="demo-ruleForm">
+          <el-form-item prop="name" label="商品名" :required="true">
+            <el-input type="text" v-model="goodsForm.name" auto-complete="off" placeholder="商品名"></el-input>
+          </el-form-item>
+          <el-form-item prop="detail" label="简介" >
+            <el-input
+              type="textarea"
+              :rows="4"
+              placeholder="简介"
+              v-model="goodsForm.detail">
+            </el-input>
+          </el-form-item>
+          <el-form-item label="缩略图" prop="image">
+            <el-upload
+              class="upload-demo"
+              action="http://127.0.0.1/sbe/img"
+              :on-preview="handlePreview"
+              :on-remove="handleRemove"
+              :file-list="logoImg"
+              :limit="6"
+              :on-success="logoImgSuccess"
+              list-type="picture">
+              <el-button size="small" type="primary">点击上传logo</el-button>
+              <span slot="tip" class="el-upload__tip">只能上传小于500kb的jpg/png文件</span>
+            </el-upload>
+          </el-form-item>
+          <el-form-item prop="detailImg" label="详细图片：">
+            <el-upload
+              action="http://127.0.0.1/sbe/img"
+              list-type="picture-card"
+              :on-preview="handlePreview"
+              :on-success="imgSuccess"
+              :on-remove="handleRemove">
+              <i class="el-icon-plus"></i>
+            </el-upload>
+            <el-dialog :visible.sync="dialogVisible">
+              <img width="100%" :src="dialogImageUrl" alt="">
+            </el-dialog>
+          </el-form-item>
+          <el-form-item prop="price" label="商品单价" :required="true">
+            <el-input type="number" v-model="goodsForm.price" auto-complete="off" placeholder="商品单价" ></el-input>
+          </el-form-item>
+          <!--<el-form-item  label="商品型号">
+            <el-row>
+              <el-col :span="5" v-for="model in models" style="margin-left: 10px">
+                <el-form-item  prop="description" >
+                  <el-input type="text" v-model="model.description" auto-complete="off" placeholder="型号"></el-input>
+                </el-form-item>
+                <el-form-item  prop="inventry" style="margin-top: 20px">
+                  <el-input type="number" v-model="model.inventry" auto-complete="off" placeholder="库存"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="3">
+                <div>
+                  <button type="button" class="abtn" @click="addModel" style="margin-top: 15px;margin-left: 10px;">添加型号</button>
+                </div>
+              </el-col>
+            </el-row>
+          </el-form-item>-->
+          <el-form-item>
+            <button class="lbtn" @click="submitForm('goodsForm')" type="button">确认添加</button>
+          </el-form-item>
+        </el-form>
+        <div class="border"></div>
+        <div class="ffooter">
         </div>
       </div>
-    </el-main>
-    <el-footer>
-      <v-footer></v-footer>
-    </el-footer>
-  </el-container>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -229,9 +219,19 @@
             }, function(response){
               // 响应错误回调
               console.log('data:'+response)
+              this.$message({
+                message: '后台错误，请联系管理员处理！',
+                type: 'error',
+                duration: 6000
+              });
             });
           } else {
             console.log('error submit!!');
+            this.$message({
+              message: '请正确填写表单！',
+              type: 'error',
+              duration: 6000
+            });
             return false;
           }
         });

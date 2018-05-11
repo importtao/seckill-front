@@ -28,20 +28,20 @@
         </el-col>
         <el-col :span="4">
 
-          <div class="r" v-if="logined">
+          <div class="r" v-if="!logined">
             <router-link to="/login" title="登录" class="link"><el-button type="text">登录</el-button></router-link> | <router-link class="link" to="/register" title="注册"><el-button type="text">注册</el-button></router-link>
           </div>
-          <div v-if="!logined" class="r">
+          <div v-if="logined" class="r">
             <el-dropdown placement="bottom">
               <span class="el-dropdown-link">
                 <el-button   circle size="mini"><i class="sk">&#xe62f;</i></el-button>
               </span>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item>黄金糕</el-dropdown-item>
-                <el-dropdown-item>狮子头</el-dropdown-item>
-                <el-dropdown-item>螺蛳粉</el-dropdown-item>
-                <el-dropdown-item disabled>双皮奶</el-dropdown-item>
-                <el-dropdown-item divided>蚵仔煎</el-dropdown-item>
+                <el-dropdown-item disabled>{{userName}}</el-dropdown-item>
+                <router-link to="/userInfo" title="个人主页" style="text-decoration:none;">
+                  <el-dropdown-item>个人主页</el-dropdown-item>
+                </router-link>
+                <el-dropdown-item divided ><el-button type="text" @click="loginout">注销登录</el-button></el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
             <el-button   circle size="mini" style="margin-left: 30px"><i class="sk">&#xe887;</i></el-button>
@@ -56,44 +56,34 @@
       <el-row class="hr">
         <el-col :span="20" class="r2 hr">
           <div class="grid-content bg-purple-dark">
-            <el-menu :default-active="activeIndex" class="el-menu-demo hr" mode="horizontal" @select="handleSelect">
+            <el-menu  class="el-menu-demo hr" mode="horizontal" @select="handleSelect" :default-active="activeIndex">
               <el-menu-item index="1">
                 <router-link to="/" title="商城首页" style="text-decoration:none;">首页</router-link>
               </el-menu-item>
-              <el-submenu index="2">
-                <template slot="title">我的工作台</template>
-                <el-menu-item index="2-1">选项1</el-menu-item>
-                <el-menu-item index="2-2">选项2</el-menu-item>
-                <el-menu-item index="2-3">选项3</el-menu-item>
-                <el-submenu index="2-4">
-                  <template slot="title">选项4</template>
-                  <el-menu-item index="2-4-1">选项1</el-menu-item>
-                  <el-menu-item index="2-4-2">选项2</el-menu-item>
-                  <el-menu-item index="2-4-3">选项3</el-menu-item>
-                </el-submenu>
-              </el-submenu>
-              <el-menu-item index="3" disabled>消息中心</el-menu-item>
-              <el-menu-item index="4"><router-link to="/wishList" title="愿望清单" style="text-decoration:none;">愿望清单</router-link></el-menu-item>
-              <el-menu-item index="5"><router-link to="/seller" title="商户端" style="text-decoration:none;">商户端</router-link></el-menu-item>
+              <el-menu-item index="2" @click="link('/order')">订单</el-menu-item><!--<router-link to="/order" title="订单" style="text-decoration:none;">订单</router-link>-->
+              <el-menu-item index="3"><router-link to="/address" title="收货地址" style="text-decoration:none;">收货地址</router-link></el-menu-item>
+              <el-menu-item index="4"><router-link to="/userInfo" title="个人主页" style="text-decoration:none;">个人主页</router-link></el-menu-item>
+              <el-menu-item index="5"><router-link to="/wishList" title="愿望清单" style="text-decoration:none;">愿望清单</router-link></el-menu-item>
+              <el-menu-item index="6"><router-link to="/seller" title="商户端" style="text-decoration:none;">商户端</router-link></el-menu-item>
 
             </el-menu>
           </div>
         </el-col>
         <el-col :span="4" class="r2 hr">
-          <div class="r hr" v-if="logined && dtop">
+          <div class="r hr" v-if="!logined && dtop">
             <router-link to="/login" title="登录" class="link"><el-button type="text">登录</el-button></router-link> | <router-link class="link" to="/register" title="注册"><el-button type="text">注册</el-button></router-link>
           </div>
-          <div v-if="!logined && dtop" class="r r2">
+          <div v-if="logined && dtop" class="r r2">
             <el-dropdown placement="bottom">
               <span class="el-dropdown-link">
                 <el-button   circle size="mini"><i class="sk">&#xe62f;</i></el-button>
               </span>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item>黄金糕</el-dropdown-item>
-                <el-dropdown-item>狮子头</el-dropdown-item>
-                <el-dropdown-item>螺蛳粉</el-dropdown-item>
-                <el-dropdown-item disabled>双皮奶</el-dropdown-item>
-                <el-dropdown-item divided>蚵仔煎</el-dropdown-item>
+                <el-dropdown-item disabled>{{userName}}</el-dropdown-item>
+                <router-link to="/userInfo" title="个人主页" style="text-decoration:none;">
+                  <el-dropdown-item>个人主页</el-dropdown-item>
+                </router-link>
+                <el-dropdown-item divided ><el-button type="text" @click="loginout">注销登录</el-button></el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
             <el-button   circle size="mini" style="margin-left: 30px"><i class="sk">&#xe887;</i></el-button>
@@ -111,6 +101,7 @@
 
 <script>
   import ElCol from "element-ui/packages/col/src/col";
+  import {setStore,getStore,removeStore} from '../utils/storage'
 
   export default {
     components: {ElCol},
@@ -118,13 +109,15 @@
     data () {
       return {
         msg: '秒杀商城首页',
+        token:'',
         keyWord: '',
         activeIndex: '1',
         activeIndex2: '1',
         auto_fixed:{},
         fixed:{},
         logined: false,
-        userInfo:{},
+        userModel:{},
+        userName:'',
         dtop: false
       }
 
@@ -137,8 +130,57 @@
       this.$nextTick(function () {
         window.addEventListener('scroll', this.onScroll)
       })
+
+      this.init()
     },
     methods:{
+      init(){
+        let token =getStore('token')
+        if(token != null){
+          this.token = token
+          console.log(this.token)
+          let args = {'token':this.token}
+          console.log(args)
+          this.$http.get('http://127.0.0.1/sbe/userModel',{params:args}).then(function(response){
+            // 响应成功回调
+            this.userModel =response.data
+            if(this.userModel.status == 0){
+              console.log(this.userModel)
+              this.userName = this.userModel.user.userName
+              if(this.userName.length>6){
+                this.userName = this.userName.slice(0,4)+'..'
+              }
+             this.logined = true
+            }else if(this.userModel.status == 2){
+              this.logined = false
+            } else{
+              this.logined = false
+            }
+          }, function(response){
+            // 响应错误回调
+            console.log('data:'+response)
+            this.logined = false
+            this.$message({
+              message: '后台错误，请联系管理员处理！',
+              type: 'error',
+              duration: 6000
+            });
+          });
+        }else {
+          this.logined = false
+        }
+
+      },
+      loginout(){
+        console.log('login out')
+        removeStore('token')
+        this.login = false
+        this.$router.push('/login')
+
+      },
+      link(url){
+        this.$router.push(url)
+      },
       doSearch (){
         alert(this.keyWord)
       },

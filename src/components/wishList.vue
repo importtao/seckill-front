@@ -1,10 +1,5 @@
 
 <template>
-  <el-container>
-    <el-header>
-      <v-header></v-header>
-    </el-header>
-    <el-main>
       <div class="m">
         <div class="m1 mc">
           <el-row>
@@ -73,11 +68,6 @@
           </el-row>
         </div>
       </div>
-    </el-main>
-    <el-footer>
-      <v-footer></v-footer>
-    </el-footer>
-  </el-container>
 </template>
 
 <script>

@@ -1,135 +1,127 @@
 
 <template>
-  <el-container>
-    <el-header>
-      <v-s-header></v-s-header>
-    </el-header>
-    <el-main>
-      <div class="m">
-        <div class="m1 mc">
-          <el-row>
-            <el-col :span="24">
-              <el-card class="box-card bh">
-                <div slot="header" class="clearfix">
-                  <span>商品列表</span>
-                  <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
-                </div>
-                <el-row>
-                  <el-table
-                    :data="data.result"
-                    style="width: 100%">
-                    <el-table-column
-                      label="商品名"
-                      width="180">
-                      <template slot-scope="scope">
-                        <span class="">{{ scope.row.goods.name }}</span>
-                      </template>
-                    </el-table-column>
-                    <el-table-column
-                      label="简介"
-                      width="180">
-                      <template slot-scope="scope">
-                        <span class="">{{ scope.row.goods.detail }}</span>
-                      </template>
-                    </el-table-column>
-                    <el-table-column
-                      label="缩略图"
-                      width="180">
-                      <template slot-scope="scope">
-                        <el-button type="text" @click="showLogo((scope.row.goods.image))">查看缩略图</el-button>
-                        <!--{{ scope.row.goods.image }}-->
-                      </template>
-                    </el-table-column>
-                    <el-table-column
-                      label="详细介绍图"
-                      width="180">
-                      <template slot-scope="scope">
-                        <el-button type="text" @click="showImage((scope.row.goodsInfo.image))">查看缩略图</el-button>
-<!--
-                        {{ scope.row.goodsInfo.image }}
--->
-                      </template>
-                    </el-table-column>
-                    <el-table-column
-                      label="单价"
-                      width="180">
-                      <template slot-scope="scope">
-                        <span class="price">￥{{ scope.row.goodsInfo.price }}</span>
-                      </template>
-                    </el-table-column>
-                    <el-table-column
-                      label="商品型号"
-                      width="180">
-                      <template slot-scope="scope">
-                        <el-button type="text" @click="showModel((scope.row.goodsModel),scope.row.goods.goodsId)">查看型号及库存</el-button>
-                      </template>
-                    </el-table-column>
-                    <el-table-column label="操作">
-                      <template slot-scope="scope">
-                        <el-button icon="el-icon-delete" circle></el-button>
-                      </template>
-                    </el-table-column>
-                  </el-table>
-                </el-row>
-              </el-card>
-            </el-col>
-          </el-row>
-        </div>
+  <div>
+    <div class="m">
+      <div class="m1 mc">
+        <el-row>
+          <el-col :span="24">
+            <el-card class="box-card bh">
+              <div slot="header" class="clearfix">
+                <span>商品列表</span>
+                <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
+              </div>
+              <el-row>
+                <el-table
+                  :data="data.result"
+                  style="width: 100%">
+                  <el-table-column
+                    label="商品名"
+                    width="180">
+                    <template slot-scope="scope">
+                      <span class="">{{ scope.row.goods.name }}</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column
+                    label="简介"
+                    width="180">
+                    <template slot-scope="scope">
+                      <span class="">{{ scope.row.goods.detail }}</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column
+                    label="缩略图"
+                    width="180">
+                    <template slot-scope="scope">
+                      <el-button type="text" @click="showLogo((scope.row.goods.image))">查看缩略图</el-button>
+                      <!--{{ scope.row.goods.image }}-->
+                    </template>
+                  </el-table-column>
+                  <el-table-column
+                    label="详细介绍图"
+                    width="180">
+                    <template slot-scope="scope">
+                      <el-button type="text" @click="showImage((scope.row.goodsInfo.image))">查看缩略图</el-button>
+                      <!--
+                                              {{ scope.row.goodsInfo.image }}
+                      -->
+                    </template>
+                  </el-table-column>
+                  <el-table-column
+                    label="单价"
+                    width="180">
+                    <template slot-scope="scope">
+                      <span class="price">￥{{ scope.row.goodsInfo.price }}</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column
+                    label="商品型号"
+                    width="180">
+                    <template slot-scope="scope">
+                      <el-button type="text" @click="showModel((scope.row.goodsModel),scope.row.goods.goodsId)">查看型号及库存</el-button>
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="操作">
+                    <template slot-scope="scope">
+                      <el-button icon="el-icon-delete" circle></el-button>
+                    </template>
+                  </el-table-column>
+                </el-table>
+              </el-row>
+            </el-card>
+          </el-col>
+        </el-row>
       </div>
-      <el-dialog title="缩略图" :visible.sync="dialogLogoVisible">
-        <div>
-          <el-row>
-            <el-col :span="8"v-for="l in this.logo" :key="l">
-                <div class="gl">
-                  <img :alt="l" style="width: 100%;height: 100%"
-                       :src="l">
-                </div>
-            </el-col>
-          </el-row>
-        </div>
-      </el-dialog>
-      <el-dialog title="详细介绍图" :visible.sync="dialogImageVisible">
-        <div>
-          <el-row>
-            <el-col :span="8" v-for="im in this.image" :key="im">
-                <div class="gi">
-                  <img :alt="im" style="width: 100%;height: 100%"
-                       :src="im">
-                </div>
-            </el-col>
-          </el-row>
-        </div>
-      </el-dialog>
-      <el-dialog title="商品型号" :visible.sync="dialogModelVisible">
-        <el-table :data="goodsModel">
-          <el-table-column property="discription" label="描述" width="150"></el-table-column>
-          <el-table-column property="modelCode" label="类型编号" width="200"></el-table-column>
-          <el-table-column property="inventry" label="库存"></el-table-column>
-        </el-table>
-        <el-button type="primary" @click="innerVisible = true">添加型号</el-button>
-      </el-dialog>
-      <el-dialog
-        width="30%"
-        title="添加型号"
-        :visible.sync="innerVisible"
-        append-to-body>
-        <el-form :model="addModel" status-icon :rules="addModelRule" ref="addModel" label-width="100px"  labelPosition="top" class="demo-ruleForm">
-          <el-form-item label="型号描述"  :required="true" prop="description">
-            <el-input v-model="addModel.description" auto-complete="off"></el-input>
-          </el-form-item>
-          <el-form-item label="库存量"  :required="true" prop="inventry">
-            <el-input type="number" v-model="addModel.inventry" auto-complete="off"></el-input>
-          </el-form-item>
-          <el-form-item>
-            <el-button class="lbtn" type="primary" @click="submitForm('addModel')">确认添加</el-button>
-          </el-form-item>
-        </el-form>
-      </el-dialog>
-    </el-main>
-    <el-footer>
-      <v-footer></v-footer>
-    </el-footer>
-  </el-container>
+    </div>
+    <el-dialog title="缩略图" :visible.sync="dialogLogoVisible">
+      <div>
+        <el-row>
+          <el-col :span="8"v-for="l in this.logo" :key="l">
+            <div class="gl">
+              <img :alt="l" style="width: 100%;height: 100%"
+                   :src="l">
+            </div>
+          </el-col>
+        </el-row>
+      </div>
+    </el-dialog>
+    <el-dialog title="详细介绍图" :visible.sync="dialogImageVisible">
+      <div>
+        <el-row>
+          <el-col :span="8" v-for="im in this.image" :key="im">
+            <div class="gi">
+              <img :alt="im" style="width: 100%;height: 100%"
+                   :src="im">
+            </div>
+          </el-col>
+        </el-row>
+      </div>
+    </el-dialog>
+    <el-dialog title="商品型号" :visible.sync="dialogModelVisible">
+      <el-table :data="goodsModel">
+        <el-table-column property="discription" label="描述" width="150"></el-table-column>
+        <el-table-column property="modelCode" label="类型编号" width="200"></el-table-column>
+        <el-table-column property="inventry" label="库存"></el-table-column>
+      </el-table>
+      <el-button type="primary" @click="innerVisible = true">添加型号</el-button>
+    </el-dialog>
+    <el-dialog
+      width="30%"
+      title="添加型号"
+      :visible.sync="innerVisible"
+      append-to-body>
+      <el-form :model="addModel" status-icon :rules="addModelRule" ref="addModel" label-width="100px"  labelPosition="top" class="demo-ruleForm">
+        <el-form-item label="型号描述"  :required="true" prop="description">
+          <el-input v-model="addModel.description" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="库存量"  :required="true" prop="inventry">
+          <el-input type="number" v-model="addModel.inventry" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button class="lbtn" type="primary" @click="submitForm('addModel')">确认添加</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
+  </div>
 </template>
 
 <script>
@@ -203,6 +195,11 @@
         }, function(response){
           // 响应错误回调
           console.log('data:'+response)
+          this.$message({
+            message: '后台错误，请联系管理员处理！',
+            type: 'error',
+            duration: 6000
+          });
         });
       },
       showModel(model,id){
@@ -269,7 +266,7 @@
                 this.$router.push('/seller/login')
               } else{
                 this.$message({
-                  message: this.addResponse.msg+"刷新页面课件",
+                  message: this.addResponse.msg+"刷新页面可见",
                   type: 'error',
                   duration: 10000
                 });
@@ -277,6 +274,11 @@
             }, function(response){
               // 响应错误回调
               console.log('data:'+response)
+              this.$message({
+                message: '后台错误，请联系管理员处理！',
+                type: 'error',
+                duration: 6000
+              });
             });
           } else {
             console.log('error submit!!');

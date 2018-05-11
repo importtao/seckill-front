@@ -9,44 +9,28 @@
               <el-menu-item index="1">
                 <router-link to="/seller" title="商城首页" style="text-decoration:none;">首页</router-link>
               </el-menu-item>
-              <el-submenu index="2">
-                <template slot="title">我的工作台</template>
-                <el-menu-item index="2-1">选项1</el-menu-item>
-                <el-menu-item index="2-2">选项2</el-menu-item>
-                <el-menu-item index="2-3">选项3</el-menu-item>
-                <el-submenu index="2-4">
-                  <template slot="title">选项4</template>
-                  <el-menu-item index="2-4-1">选项1</el-menu-item>
-                  <el-menu-item index="2-4-2">选项2</el-menu-item>
-                  <el-menu-item index="2-4-3">选项3</el-menu-item>
-                </el-submenu>
-              </el-submenu>
-              <el-menu-item index="4"><router-link to="/seller/goodsList" title="商品列表" style="text-decoration:none;">商品列表</router-link></el-menu-item>
-              <el-menu-item index="5"><router-link to="/seller/addGoods" title="添加商品" style="text-decoration:none;">添加商品</router-link></el-menu-item>
-              <el-menu-item index="6"><router-link to="/seller" title="商户端" style="text-decoration:none;">商户端</router-link></el-menu-item>
-
+              <el-menu-item index="2"><router-link to="/seller/goodsList" title="商品列表" style="text-decoration:none;">商品列表</router-link></el-menu-item>
+              <el-menu-item index="3"><router-link to="/seller/addGoods" title="添加商品" style="text-decoration:none;">添加商品</router-link></el-menu-item>
+              <el-menu-item index="4">
+                  <router-link to="/seller/pendingOrder" title="待处理订单" style="text-decoration:none;"><el-badge is-dot class="itemM">待处理订单</el-badge></router-link>
+              </el-menu-item>
+              <el-menu-item index="5"><router-link to="/seller/historycalOrder" title="历史订单" style="text-decoration:none;">历史订单</router-link></el-menu-item>
+              <el-menu-item index="6"><router-link to="/seller/dataReport" title="数据统计" style="text-decoration:none;">数据统计</router-link></el-menu-item>
             </el-menu>
           </div>
         </el-col>
         <el-col :span="4" class="r2 hr">
-          <div class="r hr" v-if="logined && dtop">
-            <router-link to="/login" title="登录" class="link"><el-button type="text">登录</el-button></router-link> | <router-link class="link" to="/register" title="注册"><el-button type="text">注册</el-button></router-link>
-          </div>
           <div v-if="!logined && dtop" class="r r2">
             <el-dropdown placement="bottom">
-              <span class="el-dropdown-link">
-                <el-button   circle size="mini" class="tx"><i class="sk">&#xe62f;</i></el-button>
-              </span>
+                <el-button   circle size="mini" class="tx"><img :alt="account" style="width: 100%;height: 100%" :src="touxiang"></el-button>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item>个人主页</el-dropdown-item>
-                <el-dropdown-item>狮子头</el-dropdown-item>
-                <el-dropdown-item>螺蛳粉</el-dropdown-item>
-                <el-dropdown-item disabled>双皮奶</el-dropdown-item>
-                <el-dropdown-item divided>注销登录</el-dropdown-item>
+                <el-dropdown-item disabled>{{sellerName}}</el-dropdown-item>
+                <router-link to="/seller/sellerInfo" title="个人主页" style="text-decoration:none;">
+                  <el-dropdown-item>个人主页</el-dropdown-item>
+                </router-link>
+                <el-dropdown-item divided ><el-button type="text" @click="loginout">注销登录</el-button></el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
-            <el-button   circle size="mini" style="margin-left: 30px"><i class="sk">&#xe887;</i></el-button>
-            <el-button type="danger"  circle size="mini" style="margin-left: -5px;padding: 5px;">13</el-button>
           </div>
         </el-col>
       </el-row>
@@ -58,17 +42,24 @@
 </template>
 
 <script>
+  import {setStore,getStore,setSession,getSession,removeStore} from '../../utils/storage'
+  import ElButton from "../../../node_modules/element-ui/packages/button/src/button.vue";
+
 
   export default {
     name: 'home',
     data () {
       return {
+        touxiang:'',
+        account:'',
+        sellerName:'',
         activeIndex: '1',
         activeIndex2: '1',
+        sellerToken:'',
         auto_fixed:{},
         fixed:{},
         logined: false,
-        userInfo:{},
+        sellerModel:{},
         dtop: true
       };
     },
@@ -80,8 +71,60 @@
       this.$nextTick(function () {
         window.addEventListener('scroll', this.onScroll)
       })
+
+      this.init()
     },
     methods: {
+      init(){
+        let sellerToken =getStore('sellerToken')
+        if(sellerToken != null){
+          this.sellerToken = sellerToken
+          console.log(this.sellerToken)
+        }else {
+          this.$message({
+            message: '未登录或登录超时！',
+            type: 'error',
+            duration: 10000
+          });
+          this.$router.push('/seller/login')
+        }
+        let args = {'sellerToken':this.sellerToken}
+        console.log(args)
+        this.$http.get('http://127.0.0.1/sbe/sellerModel',{params:args}).then(function(response){
+          // 响应成功回调
+          this.sellerModel =response.data
+          if(this.sellerModel.status == 0){
+            console.log(this.sellerModel)
+            this.touxiang = 'http://127.0.0.1/sbe/img/'+this.sellerModel.seller.logo
+            this.account = this.sellerModel.seller.account
+            this.sellerName = this.sellerModel.seller.name
+            if(this.sellerName.length>6){
+              this.sellerName = this.sellerName.slice(0,4)+'..'
+            }
+          }else if(this.sellerModel.status == 2){
+            this.$message({
+              message: this.sellerModel.msg,
+              type: 'error',
+              duration: 6000
+            });
+            this.$router.push('/seller/login')
+          } else{
+            this.$message({
+              message: this.sellerModel.msg,
+              type: 'error',
+              duration: 10000
+            });
+          }
+        }, function(response){
+          // 响应错误回调
+          console.log('data:'+response)
+          this.$message({
+            message: '后台错误，请联系管理员处理！',
+            type: 'error',
+            duration: 6000
+          });
+        });
+      },
       handleSelect(key, keyPath) {
         console.log(key, keyPath);
       },
@@ -105,9 +148,15 @@
           auto_fixed: true,
           fixed: scrolled >= header_height
         }
+      },
+      loginout(){
+        console.log('login out')
+        removeStore('sellerToken')
+        this.$router.push('/seller/login')
       }
     },
     components: {
+      ElButton
     }
   }
 </script>
@@ -180,7 +229,14 @@
     color: white;
   }
   .tx{
-    background: url("../../assets/logo.png")no-repeat 50%;
+    background:no-repeat 50%;
     background-size: cover;
+    width: 58px;
+    height: 58px;
+
+  }
+  .itemM {
+    margin-top: 1px;
+    margin-right: 10px;
   }
 </style>
