@@ -69,7 +69,7 @@
             </el-menu>
           </div>
         </el-col>
-        <el-col :span="4" class="r2 hr">
+        <el-col :span="4" class="r2 hr" style="padding-top: ">
           <div class="r hr" v-if="!logined && dtop">
             <router-link to="/login" title="登录" class="link"><el-button type="text">登录</el-button></router-link> | <router-link class="link" to="/register" title="注册"><el-button type="text">注册</el-button></router-link>
           </div>
@@ -102,6 +102,8 @@
 <script>
   import ElCol from "element-ui/packages/col/src/col";
   import {setStore,getStore,removeStore} from '../utils/storage'
+  import global from '../global/global'
+
 
   export default {
     components: {ElCol},
@@ -141,7 +143,7 @@
           console.log(this.token)
           let args = {'token':this.token}
           console.log(args)
-          this.$http.get('http://127.0.0.1/sbe/userModel',{params:args}).then(function(response){
+          this.$http.get(global.serverPath+'userModel',{params:args}).then(function(response){
             // 响应成功回调
             this.userModel =response.data
             if(this.userModel.status == 0){
@@ -182,7 +184,8 @@
         this.$router.push(url)
       },
       doSearch (){
-        alert(this.keyWord)
+        console.log(this.keyWord)
+        this.$router.push('/goods/'+this.keyWord)
       },
       handleSelect(key, keyPath) {
         console.log(key, keyPath);
@@ -220,11 +223,12 @@
   @import "../assets/icon/iconfont.css";
   .top{
     font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+    height: 135px;
   }
 
   /*顶部悬浮导航栏*/
   .auto_fixed{
-    height: 3em;
+    height: 60px;
     background: #ededed;;
     line-height: 3em;
     text-align: center;
@@ -242,7 +246,7 @@
     min-height: 50px;
   }
   .header-block{
-    height: 60px;
+    height: 70px;
     padding-top: 15px;
     background-color: #000000;
     width: 100%;

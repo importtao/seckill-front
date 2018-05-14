@@ -131,6 +131,8 @@
   import ElRow from "element-ui/packages/row/src/row";
   import ElCol from "element-ui/packages/col/src/col";
   import ElButton from "../../../node_modules/element-ui/packages/button/src/button.vue";
+  import global from '../../global/global'
+
 
   export default {
     data() {
@@ -173,7 +175,7 @@
         }
         let args = {'sellerToken':this.sellerToken}
         console.log(args)
-        this.$http.get('http://127.0.0.1/sbe/myGoodsList',{params:args}).then(function(response){
+        this.$http.get(global.serverPath+'myGoodsList',{params:args}).then(function(response){
           // 响应成功回调
           this.data =response.data
           if(this.data.status == 0){
@@ -217,7 +219,7 @@
             m.splice(i,1);
             i=i-1;
           }else {
-            m[i] = 'http://127.0.0.1/sbe/img/'+m[i]
+            m[i] = global.serverPath+'img/'+m[i]
           }
         }
         this.image = m
@@ -231,7 +233,7 @@
             m.splice(i,1);
             i=i-1;
           }else {
-            m[i] = 'http://127.0.0.1/sbe/img/'+m[i]
+            m[i] = global.serverPath+'img/'+m[i]
           }
         }
         this.logo = m
@@ -245,7 +247,7 @@
           if (valid) {
             let args = {'sellerToken':this.sellerToken,'goodsId':this.checkGoods,'description':this.addModel.description,'inventry':this.addModel.inventry}
             console.log(args)
-            this.$http.post('http://127.0.0.1/sbe/goodsModel',args,{emulateJSON: true}).then(function(response){
+            this.$http.post(global.serverPath+'goodsModel',args,{emulateJSON: true}).then(function(response){
               // 响应成功回调
               this.addResponse=response.data
               if(this.addResponse.status == 0){

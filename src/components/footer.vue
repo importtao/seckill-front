@@ -12,7 +12,7 @@
   .footer {
     padding: 50px 0 20px;
     background: #fff;
-    margin-top: 20px;
+    margin-top: 5px;
   }
 
   .tag {

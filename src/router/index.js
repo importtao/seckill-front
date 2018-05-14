@@ -24,6 +24,7 @@ import historycalOrder from '@/components/seller/historycalOrder'
 import pendingOrder from '@/components/seller/pendingOrder'
 import sellerInfo from '@/components/seller/sellerHome'
 import sellerOrder from '@/components/seller/order'
+import addSeckill from '@/components/seller/addSeckill'
 
 Vue.use(Router)
 
@@ -40,50 +41,77 @@ export default new Router({
         },
         {
           path: '/wishList',
-          name: 'wishList',
-          component: wishList
+          component: wishList,
+          name:"愿望清单",
+          meta:{
+            title:"愿望清单"
+          }
         },
         {
           path: '/goods/:keyword',
-          name: 'goods',
-          component: goods
+          component: goods,
+          name:"搜索商品",
+          meta:{
+            title:"搜索商品"
+          }
         },
         {
-          path: '/goodsDetail/:id',
-          name: 'goodsDetail',
-          component: goodsDetail
+          path: '/goodsDetail/:goodsId',
+          component: goodsDetail,
+          name:"商品详情",
+          meta:{
+            title:"商品详情"
+          }
         },
         {
           path: '/address',
-          name: 'address',
-          component: address
+          component: address,
+          name:"收货地址",
+          meta:{
+            title:"收货地址"
+          }
         },
         {
           path: '/order',
-          name: 'order',
-          component: order
+          component: order,
+          name:"我的订单",
+          meta:{
+            title:"我的订单"
+          }
         },
         {
           path: '/userInfo',
-          name: 'userInfo',
-          component: userInfo
+          component: userInfo,
+          name:"用户首页",
+          meta:{
+            title:"用户首页"
+          }
         },
         {
           path: '/orderDetail/:orderId',
-          name: 'orderDetail',
-          component: orderDetail
+          component: orderDetail,
+          name:"订单详情",
+          meta:{
+            title:"订单详情"
+          }
         }
       ]
     },
     {
       path: '/login',
-      name: 'login',
-      component: login
+      component: login,
+      name:"用户登录",
+      meta:{
+        title:"用户登录"
+      }
     },
     {
       path: '/register',
-      name: 'register',
-      component: register
+      component: register,
+      name:"用户注册",
+      meta:{
+        title:"用户注册"
+      }
     },
     {
       path: '/seller',
@@ -91,53 +119,92 @@ export default new Router({
       children:[
         {
           path: '/seller',
-          component: sellerMain
+          component: sellerMain,
+          meta:{
+            title:"秒杀商城商户端"
+          },
         },
         {
           path: '/seller/addGoods',
           name: 'addGoods',
-          component: addGoods
+          component: addGoods,
+          meta:{
+            title:"商户端-添加商品"
+          }
         },
         {
           path: '/seller/goodsList',
-          name: 'goodsList',
-          component: goodsList
+          component: goodsList,
+          name:"商户端-商品列表",
+          meta:{
+            title:"商户端-商品列表"
+          }
         },
         {
           path: '/seller/dataReport',
-          name: 'dataReport',
-          component: dataReport
+          component: dataReport,
+          name:"商户端-数据报表",
+          meta:{
+            title:"商户端-数据报表"
+          }
         },
         {
           path: '/seller/historycalOrder',
-          name: 'historycalOrder',
-          component: historycalOrder
+          component: historycalOrder,
+          name:"商户端-历史订单",
+          meta:{
+            title:"商户端-历史订单"
+          }
         },
         {
           path: '/seller/pendingOrder',
-          name: 'pendingOrder',
-          component: pendingOrder
+          component: pendingOrder,
+          name:"商户端-待处理订单",
+          meta:{
+            title:"商户端-待处理订单"
+          }
         },
         {
           path: '/seller/sellerInfo',
-          name: 'sellerInfo',
-          component: sellerInfo
+          component: sellerInfo,
+          name:"商户端-商户主页",
+          meta:{
+            title:"商户端-商户主页"
+          }
         },
         {
           path: '/seller/sellerOrder/:orderId',
-          name: 'sellerOrder',
-          component: sellerOrder
+          component: sellerOrder,
+          name:"商户端-订单",
+          meta:{
+            title:"商户端-订单"
+          }
+        },
+        {
+          path: '/seller/addSeckill',
+          component: addSeckill,
+          name:"商户端-发布秒杀",
+          meta:{
+            title:"商户端-发布秒杀"
+          }
         }
+
       ]
     },
     {
       path: '/seller/login',
-      name: 'sellerLogin',
-      component: sellerLogin
+      component: sellerLogin,
+      name:"商户端-登录",
+      meta:{
+        title:"商户端-登录"
+      }
     },{
       path: '/seller/register',
-      name: 'sellerRegister',
-      component: sellerRegister
+      component: sellerRegister,
+      name:"商户端-注册",
+      meta:{
+        title:"商户端-注册"
+      }
     },
     { path: '*', component: notfound }
   ]

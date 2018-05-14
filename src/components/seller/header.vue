@@ -15,7 +15,8 @@
                   <router-link to="/seller/pendingOrder" title="待处理订单" style="text-decoration:none;"><el-badge is-dot class="itemM">待处理订单</el-badge></router-link>
               </el-menu-item>
               <el-menu-item index="5"><router-link to="/seller/historycalOrder" title="历史订单" style="text-decoration:none;">历史订单</router-link></el-menu-item>
-              <el-menu-item index="6"><router-link to="/seller/dataReport" title="数据统计" style="text-decoration:none;">数据统计</router-link></el-menu-item>
+              <el-menu-item index="6"><router-link to="/seller/addSeckill" title="发布秒杀" style="text-decoration:none;">发布秒杀</router-link></el-menu-item>
+              <el-menu-item index="7"><router-link to="/seller/dataReport" title="数据统计" style="text-decoration:none;">数据统计</router-link></el-menu-item>
             </el-menu>
           </div>
         </el-col>
@@ -44,6 +45,8 @@
 <script>
   import {setStore,getStore,setSession,getSession,removeStore} from '../../utils/storage'
   import ElButton from "../../../node_modules/element-ui/packages/button/src/button.vue";
+  import global from '../../global/global'
+
 
 
   export default {
@@ -90,12 +93,12 @@
         }
         let args = {'sellerToken':this.sellerToken}
         console.log(args)
-        this.$http.get('http://127.0.0.1/sbe/sellerModel',{params:args}).then(function(response){
+        this.$http.get(global.serverPath+'sellerModel',{params:args}).then(function(response){
           // 响应成功回调
           this.sellerModel =response.data
           if(this.sellerModel.status == 0){
             console.log(this.sellerModel)
-            this.touxiang = 'http://127.0.0.1/sbe/img/'+this.sellerModel.seller.logo
+            this.touxiang = global.serverPath+'img/'+this.sellerModel.seller.logo
             this.account = this.sellerModel.seller.account
             this.sellerName = this.sellerModel.seller.name
             if(this.sellerName.length>6){

@@ -35,6 +35,8 @@
 
   import ElFormItem from "../../node_modules/element-ui/packages/form/src/form-item.vue";
   import {setStore,getStore,setSession,getSession} from '../utils/storage'
+  import global from '../global/global'
+
 
   export default {
     components: {ElFormItem},
@@ -99,7 +101,7 @@
           if (valid) {
             let args = {'phone':this.registerForm.phone,'password':this.registerForm.pass}
             console.log(args)
-            this.$http.post('http://127.0.0.1/sbe/user',args,{emulateJSON: true}).then(function(response){
+            this.$http.post(global.serverPath+'user',args,{emulateJSON: true}).then(function(response){
               // 响应成功回调
               this.registerResponse=response.data
               if(this.registerResponse.status == 0){
@@ -116,6 +118,11 @@
             }, function(response){
               // 响应错误回调
               console.log('data:'+response)
+              this.$message({
+                message: '后台错误，请联系管理员处理！',
+                type: 'error',
+                duration: 6000
+              });
             });
           } else {
             console.log('error submit!!');

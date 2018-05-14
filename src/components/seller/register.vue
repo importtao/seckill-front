@@ -92,6 +92,8 @@
 
   import ElFormItem from "../../../node_modules/element-ui/packages/form/src/form-item.vue";
   import {setStore,getStore,setSession,getSession} from '../../utils/storage'
+  import global from '../../global/global'
+
 
   export default {
     components: {ElFormItem},
@@ -195,7 +197,7 @@
           if (valid) {
             let args = {'password':this.registerForm.pass  ,'phone':this.registerForm.phone ,'corporation': this.registerForm.corporation,'idImg': this.registerForm.idImg,'license':this.registerForm.license,'name': this.registerForm.name,'detail':this.registerForm.detail,'logoImg': this.registerForm.logoImg}
             console.log(args)
-            this.$http.post('http://127.0.0.1/sbe/seller',args,{emulateJSON: true}).then(function(response){
+            this.$http.post(global.serverPath+'seller',args,{emulateJSON: true}).then(function(response){
               // 响应成功回调
               this.registerResponse=response.data
               if(this.registerResponse.status == 0){

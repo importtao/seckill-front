@@ -78,26 +78,14 @@
         </el-col>
       </el-row>
     </div>
-    <div class="m1 mc">
-      <el-dropdown>
-        <span class="el-dropdown-link">
-          <el-button   circle size="mini"><i class="sk">&#xe62f;</i></el-button>
-        </span>
-        <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>黄金糕</el-dropdown-item>
-          <el-dropdown-item>狮子头</el-dropdown-item>
-          <el-dropdown-item>螺蛳粉</el-dropdown-item>
-          <el-dropdown-item disabled>双皮奶</el-dropdown-item>
-          <el-dropdown-item divided>蚵仔煎</el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
-    </div>
   </div>
 </template>
 
 <script>
   import ElRow from "element-ui/packages/row/src/row";
   import ElCol from "element-ui/packages/col/src/col";
+  import global from '../global/global'
+
 
   export default {
     components: {

@@ -35,6 +35,8 @@
 
   import ElFormItem from "../../../node_modules/element-ui/packages/form/src/form-item.vue";
   import {setStore,getStore,setSession,getSession} from '../../utils/storage'
+  import global from '../../global/global'
+
 
   export default {
     components: {ElFormItem},
@@ -106,7 +108,7 @@
         this.$refs[formName].validate((valid) => {
           if (valid) {
             let arg = {'parameter':this.loginForm.parameter,'password':this.loginForm.pass}
-            this.$http.get('http://127.0.0.1/sbe/seller',{params:arg}).then(function(response){
+            this.$http.get(global.serverPath+'seller',{params:arg}).then(function(response){
               // 响应成功回调
               if(this.rp){
                 setStore('sellerPass', arg)

@@ -1,27 +1,44 @@
 <template>
+  <div class="bd">
+    <el-card class="box-card">
+      <div slot="header" class="clearfix">
+        <span>订单</span>
+        <el-button style="float: right; padding: 3px 0" type="text" @click="addressAddVisible = true">添加收货地址</el-button>
+      </div>
+
+      <el-row>
+
+      </el-row>
+    </el-card>
+  </div>
 </template>
 
 <script>
-  import header from '@/components/header'
-  import footer from '@/components/footer'
+  import global from '../global/global'
+
   export default {
     name: 'home',
     data () {
       return {
-        msg: '秒杀商城首页'
       }
     },
     components: {
-      'v-header': header,
-      'v-footer': footer,
     }
   }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  .el-footer,.el-header{
-    width: 100%;
-    padding: 0px;
+  .bd{
+    /* background: url("../assets/images/background.png") repeat;
+     background-size: 100px;*/
+    min-height: 350px;
+    padding-top: 100px;
+  }
+  .box-card{
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    height: 70%;
   }
 </style>

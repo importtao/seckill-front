@@ -16,6 +16,8 @@
   import header from '@/components/header'
   import footer from '@/components/footer'
   import homeMain from '@/components/homeMain'
+  import global from '../global/global'
+
   export default {
     name: 'home',
     data () {
@@ -36,5 +38,9 @@
   .el-footer,.el-header{
     width: 100%;
     padding: 0px;
+  }
+  .el-main{
+    padding-left: 0px;
+    padding-right: 0px;
   }
 </style>

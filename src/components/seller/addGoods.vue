@@ -26,6 +26,7 @@
               :on-preview="handlePreview"
               :on-remove="handleRemove"
               :file-list="logoImg"
+              :on-exceed="handleExceed"
               :limit="6"
               :on-success="logoImgSuccess"
               list-type="picture">
@@ -39,6 +40,8 @@
               list-type="picture-card"
               :on-preview="handlePreview"
               :on-success="imgSuccess"
+              :on-exceed="handleExceed"
+              :limit="6"
               :on-remove="handleRemove">
               <i class="el-icon-plus"></i>
             </el-upload>
@@ -86,6 +89,8 @@
   import ElCol from "element-ui/packages/col/src/col";
   import ElButton from "../../../node_modules/element-ui/packages/button/src/button.vue";
   import {setStore,getStore,setSession,getSession} from '../../utils/storage'
+  import global from '../../global/global'
+
 
 
   export default {
@@ -192,7 +197,7 @@
           if (valid) {
             let args = {'name':this.goodsForm.name, 'detail':this.goodsForm.detail, 'image':this.goodsForm.image, 'detailImg':this.goodsForm.detailImg, 'price': this.goodsForm.price,'sellerToken':this.sellerToken}
             console.log(args)
-            this.$http.post('http://127.0.0.1/sbe/goods',args,{emulateJSON: true}).then(function(response){
+            this.$http.post(global.serverPath+'goods',args,{emulateJSON: true}).then(function(response){
               // 响应成功回调
               this.addResponse=response.data
               if(this.addResponse.status == 0){
@@ -244,6 +249,9 @@
       },
       handlePreview(file) {
         console.log(file);
+      },
+      handleExceed(files, fileList) {
+        this.$message.warning(`当前限制选择 6 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
       }
     },
     components: {

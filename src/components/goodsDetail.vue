@@ -4,15 +4,15 @@
         <div class="m1">
           <el-row>
             <el-col :span="3">
-              <div class="sg" v-for="img in goodsDetail.imgs" @click="checkImg(img)" tabindex="0">
+              <div class="sg" v-for="img in goodsDetail.logoImg" @click="checkImg(img)" tabindex="0">
                 <img :alt="img" style="width: 100%;height: 100%"
                      :src="img">
               </div>
             </el-col>
             <el-col :span="9">
               <div class="lg" >
-                <img :alt="limg" style="width: 100%;height: 100%"
-                     :src="limg">
+                <img :alt="goodsDetail.limg" style="width: 100%;height: 100%"
+                     :src="goodsDetail.limg">
               </div>
             </el-col>
             <el-col :span="9">
@@ -37,9 +37,8 @@
                 <el-select v-model="ct" placeholder="请选择">
                   <el-option
                     v-for="ty in goodsDetail.type"
-                    :key="ty"
-                    :label="ty"
-                    :value="ty">
+                    :label="ty.discription"
+                    :value="ty.modelCode">
                   </el-option>
                 </el-select>
               </el-row>
@@ -55,6 +54,10 @@
             <div class="bt" style="padding-top: 10px">
               <span style="margin-left: 15px;ont-size: 18px;font-weight: 400;color: #626262;">产品信息</span>
             </div>
+            <div class="dib" v-for="img in goodsDetail.detailImg"  tabindex="0">
+              <img :alt="img" style="width: 100%;height: 100%"
+                   :src="img">
+            </div>
           </el-row>
         </div>
       </div>
@@ -66,6 +69,7 @@
   import ElRow from "element-ui/packages/row/src/row";
   import ElCol from "element-ui/packages/col/src/col";
   import ElButton from "../../node_modules/element-ui/packages/button/src/button.vue";
+  import global from '../global/global'
 
   export default {
     name: 'home',
@@ -75,20 +79,78 @@
         hasBorder: false,
         ct: '请选择型号',
         goodsDetail:{
-          imgs: ['https://img.alicdn.com/bao/uploaded/i2/TB1epw_HpXXXXbFXVXXVJyf8VXX_031714.jpg_b.jpg','https://img.alicdn.com/bao/uploaded/i2/TB1epw_HpXXXXbFXVXXVJyf8VXX_031714.jpg_b.jpg','https://img.alicdn.com/bao/uploaded/i2/TB1epw_HpXXXXbFXVXXVJyf8VXX_031714.jpg_b.jpg','https://img.alicdn.com/bao/uploaded/i2/TB1epw_HpXXXXbFXVXXVJyf8VXX_031714.jpg_b.jpg','https://img.alicdn.com/bao/uploaded/i2/TB1epw_HpXXXXbFXVXXVJyf8VXX_031714.jpg_b.jpg'],
-          name: 'Smartisan 记事本',
+          logoImg: [],
+          name: '',
+          detail: '',
           price: 99,
-          type:['白色','黑色'],
-          id:'1',
+          type:[],
+          goodsId:'',
           number: 2,
-          introduces:['https://img.alicdn.com/bao/uploaded/i2/TB1epw_HpXXXXbFXVXXVJyf8VXX_031714.jpg_b.jpg','https://img.alicdn.com/bao/uploaded/i2/TB1epw_HpXXXXbFXVXXVJyf8VXX_031714.jpg_b.jpg','https://img.alicdn.com/bao/uploaded/i2/TB1epw_HpXXXXbFXVXXVJyf8VXX_031714.jpg_b.jpg','https://img.alicdn.com/bao/uploaded/i2/TB1epw_HpXXXXbFXVXXVJyf8VXX_031714.jpg_b.jpg','https://img.alicdn.com/bao/uploaded/i2/TB1epw_HpXXXXbFXVXXVJyf8VXX_031714.jpg_b.jpg']
-        },
-        limg: ''
+          detailImg:[],
+          limg: ''
+        }
       }
-    },methods:{
+    },
+    mounted:function () {
+      this.init()
+    },
+    methods:{
+      init(){
+        this.$route.params.goodsId
+        let args = {'goodsId':this.$route.params.goodsId}
+        console.log(args)
+        this.$http.get(global.serverPath+'goods',{params:args}).then(function(response){
+          // 响应成功回调
+          let result =response.data
+          if(result.status == 0){
+            console.log(result)
+            this.goodsDetail.name = result.goods.name
+            this.goodsDetail.detail = result.goods.detail
+            this.goodsDetail.price = result.goodsInfo.price
+            this.goodsDetail.type = result.goodsModel
+            this.goodsDetail.goodsId = result.goods.goodsId
+            let m = result.goods.image.split('/')
+            for(var i = 0;i<m.length;i++){
+              if(m[i]==''||m[i]==null||typeof(m[i])==undefined){
+                m.splice(i,1);
+                i=i-1;
+              }else {
+                m[i] = global.serverPath+'img/'+m[i]
+              }
+            }
+            this.goodsDetail.limg = m[0]
+            this.goodsDetail.logoImg = m
+            let img = result.goodsInfo.image.split('/')
+            for(var i = 0;i<img.length;i++){
+              if(img[i]==''||img[i]==null||typeof(img[i])==undefined){
+                img.splice(i,1);
+                i=i-1;
+              }else {
+                img[i] = global.serverPath+'img/'+img[i]
+              }
+            }
+            this.goodsDetail.detailImg = img
+          }else{
+            this.$message({
+              message: result.msg,
+              type: 'error',
+              duration: 6000
+            });
+            this.$router.push('/')
+          }
+        }, function(response){
+          // 响应错误回调
+          console.log('data:'+response)
+          this.logined = false
+          this.$message({
+            message: '后台错误，请联系管理员处理！',
+            type: 'error',
+            duration: 6000
+          });
+        });
+      },
       checkImg(img){
-        this.limg = img
-        console.log(this.goodsDetail.imgs[0])
+        this.goodsDetail.limg = img
       }
     },
     components: {
@@ -129,7 +191,6 @@
     padding-top: 15px;
   }
   .m2{
-    height: 500px;
     background-color: white;
     border-radius: 10px;
     margin-top: 15px;
@@ -183,5 +244,9 @@
     height: 40px;
     border-radius: 10px 10px 0px 0px;
     box-shadow: 0 2px 4px rgba(0,0,0,.04);
+  }
+  .dib{
+    width: 100%;
+    height: 600px;
   }
 </style>

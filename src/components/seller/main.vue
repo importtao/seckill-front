@@ -1,9 +1,4 @@
 <template>
-  <el-container>
-    <el-header>
-      <v-s-header></v-s-header>
-    </el-header>
-    <el-main>
       <div class="mb">
         <el-row>
           <el-col :span="8">
@@ -107,11 +102,6 @@
         </el-row>
 
       </div>
-    </el-main>
-    <el-footer>
-      <v-footer></v-footer>
-    </el-footer>
-  </el-container>
 </template>
 
 <script>
@@ -119,6 +109,8 @@
   import footer from '@/components/footer'
   import ElRow from "element-ui/packages/row/src/row";
   import ElCol from "element-ui/packages/col/src/col";
+  import global from '../../global/global'
+
   import {setStore,getStore,setSession,getSession} from '../../utils/storage'
 
   export default {
